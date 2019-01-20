@@ -46,6 +46,128 @@ class Calendar extends Component {
     return firstDay;
   }
 
+  //JUMP TO MONTH
+  setMonth = (month) => {
+       let monthNo = this.months.indexOf(month);
+       let dateContext = Object.assign({}, this.state.dateContext);
+       dateContext = moment(dateContext).set("month", monthNo);
+       this.setState({
+           dateContext: dateContext
+       });
+   }
+
+  onSelectChange = (e, data) => {
+        this.setMonth(data);
+        this.props.onMonthChange && this.props.onMonthChange();
+    }
+
+  SelectList = (props) => {
+       let popup = props.data.map((data) => {
+           return (
+               <div key={data}>
+                   <a href="#" onClick={(e)=> {this.onSelectChange(e, data)}}>
+                       {data}
+                   </a>
+               </div>
+           );
+       });
+
+       return (
+           <div className="month-popup">
+               {popup}
+           </div>
+       );
+   }
+
+  onChangeMonth = (e, month) => {
+      this.setState({
+          showMonthPopup: !this.state.showMonthPopup
+      });
+  }
+    MonthNav = () => {
+        return (
+            <div onClick={(e)=> {this.onChangeMonth(e, this.month())}}>
+                {this.month()}
+                {this.state.showMonthPopup &&
+                 <this.SelectList data={this.months} />
+                }
+            </div>
+        );
+    }
+//JUMP TO MONTH END
+
+//JUMP TO YEAR
+
+showYearEditor = () => {
+    this.setState({
+        showYearNav: true
+    });
+}
+
+setYear = (year) => {
+       let dateContext = Object.assign({}, this.state.dateContext);
+       dateContext = moment(dateContext).set("year", year);
+       this.setState({
+           dateContext: dateContext
+       })
+}
+
+   onYearChange = (e) => {
+       this.setYear(e.target.value);
+       this.props.onYearChange && this.props.onYearChange(e, e.target.value);
+   }
+
+   onKeyUpYear = (e) => {
+       if (e.which === 13 || e.which === 27) {
+           this.setYear(e.target.value);
+           this.setState({
+               showYearNav: false
+           })
+       }
+   }
+
+YearNav = () => {
+     return (
+         this.state.showYearNav ?
+         <input
+             defaultValue = {this.year()}
+             className="editor-year"
+             ref={(yearInput) => { this.yearInput = yearInput}}
+             onKeyUp= {(e) => this.onKeyUpYear(e)}
+             onChange = {(e) => this.onYearChange(e)}
+             type="number"
+             placeholder="year"/>
+         :
+         <span
+             className="label-year"
+             onDoubleClick={(e)=> { this.showYearEditor()}}>
+             {this.year()}
+         </span>
+     );
+ }
+
+ //JUMP TO YEAR END
+
+ //NEXT AND PREVIEW
+
+    nextMonth = () => {
+        let dateContext = Object.assign({}, this.state.dateContext);
+        dateContext = moment(dateContext).add(1, "month");
+        this.setState({
+            dateContext: dateContext
+        });
+        this.props.onNextMonth && this.props.onNextMonth();
+    }
+
+    prevMonth = () => {
+        let dateContext = Object.assign({}, this.state.dateContext);
+        dateContext = moment(dateContext).subtract(1, "month");
+        this.setState({
+            dateContext: dateContext
+        });
+        this.props.onPrevMonth && this.props.onPrevMonth();
+    }
+
   //Rendar Method Start
   render(){
 
@@ -97,7 +219,19 @@ class Calendar extends Component {
       );
     });
 
-
+    /*
+    //List of months
+    let monthsList = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    let dropDownMonths = monthsList.map((month) => {
+      return (
+        <option value={month}> {month} </option>
+      );
+    });
+    function testFunction(){
+        let selecter = document.getElementById('selectMe');
+        console.log(selecter.value);
+    }
+    */
     return(
       <Fragment>
         <div className="wrapper">
@@ -105,7 +239,6 @@ class Calendar extends Component {
             <h1> Calendar </h1>
           </header>
           <section className="calendar-body">
-
             <table>
               <thead>
                 <tr>{weekdays}</tr>
@@ -114,9 +247,16 @@ class Calendar extends Component {
                 {finalDays}
               </tbody>
             </table>
-
           </section>
-
+          <section>
+            <this.MonthNav />
+            {" "}
+            <this.YearNav />
+          </section>
+          <section>
+            <span onClick={(e)=> {this.prevMonth()}}>Pre </span>
+            <span onClick={(e)=> {this.nextMonth()}}> Next</span>
+          </section>
 
         </div>
       </Fragment>
