@@ -37,4 +37,11 @@ table .current-day {
   background: orange !important;
 }
 
+button {
+  background: blue;
+  padding: 1rem 2rem;
+  color: white;
+  margin: 1rem;
+}
+
 /*# sourceMappingURL=style.css.map */

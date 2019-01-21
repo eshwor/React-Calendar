@@ -1,25 +1,23 @@
 import React, { Component, Fragment } from 'react';
 import moment from 'moment';
+import Month from './Months';
 import './style.css';
 
 class Calendar extends Component {
   state = {
     dateContext: moment(),
-    today: moment(),
-    showMonth: false,
-    showYear: false
+    today: moment()
   }
 
-  constructor(props){
-    super(props);
-
-  }
+  // constructor(props){
+  //   super(props);
+  // }
 
   //Take a advantage of moment by using it's properies and methods
   weekdays = moment.weekdaysShort();
   months = moment.months();
 
-  //Useful function define
+  //Useful methods define
   year = () => {
     return this.state.dateContext.format("Y");
   }
@@ -219,19 +217,6 @@ YearNav = () => {
       );
     });
 
-    /*
-    //List of months
-    let monthsList = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-    let dropDownMonths = monthsList.map((month) => {
-      return (
-        <option value={month}> {month} </option>
-      );
-    });
-    function testFunction(){
-        let selecter = document.getElementById('selectMe');
-        console.log(selecter.value);
-    }
-    */
     return(
       <Fragment>
         <div className="wrapper">
