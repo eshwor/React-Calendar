@@ -1,5 +1,12 @@
 /**
   StyleSheet for Calendar
+  /**
+  CALENDAR MAIN STYLE GOES HERE
+  CREATED BY ISHWOR
+  FRONT END DEVELOPER
+  DESCRIPTION: I have dump all the var and usefull class in same file for this small Project but it would be
+                nice if we make a seperate file for var and common useful class so on.
+                This is kind a basic styles for calendar but we could do lot more as we need.
 */
 * {
   padding: 0;
@@ -13,6 +20,9 @@
   margin: 2rem auto;
   width: 29rem;
   border-radius: 0.5rem;
+}
+.wrapper header {
+  padding-bottom: 1rem;
 }
 
 section.calendar-body {
@@ -37,11 +47,52 @@ table .current-day {
   background: orange !important;
 }
 
-button {
-  background: blue;
-  padding: 1rem 2rem;
-  color: white;
-  margin: 1rem;
+.footer-section {
+  border: 3px solid #FFF;
+  display: flex;
+  justify-content: space-around;
+}
+.footer-section .month-dropdown, .footer-section .year-dropdown, .footer-section .previous, .footer-section .next {
+  padding: 1rem;
+}
+.footer-section .month-dropdown select, .footer-section .year-dropdown select, .footer-section .previous select, .footer-section .next select {
+  background: #f3f3f5;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  padding: 1rem;
+  cursor: pointer;
+}
+.footer-section .month-dropdown .unique-dropdown, .footer-section .month-dropdown input, .footer-section .year-dropdown .unique-dropdown, .footer-section .year-dropdown input, .footer-section .previous .unique-dropdown, .footer-section .previous input, .footer-section .next .unique-dropdown, .footer-section .next input {
+  background: #f3f3f5;
+  padding: 0.5rem;
+  border-bottom: 1px solid #dedee1;
+  cursor: pointer;
+}
+.footer-section .month-dropdown .unique-dropdown:hover, .footer-section .month-dropdown .unique-dropdown:focus, .footer-section .month-dropdown .unique-dropdown:active, .footer-section .month-dropdown input:hover, .footer-section .month-dropdown input:focus, .footer-section .month-dropdown input:active, .footer-section .year-dropdown .unique-dropdown:hover, .footer-section .year-dropdown .unique-dropdown:focus, .footer-section .year-dropdown .unique-dropdown:active, .footer-section .year-dropdown input:hover, .footer-section .year-dropdown input:focus, .footer-section .year-dropdown input:active, .footer-section .previous .unique-dropdown:hover, .footer-section .previous .unique-dropdown:focus, .footer-section .previous .unique-dropdown:active, .footer-section .previous input:hover, .footer-section .previous input:focus, .footer-section .previous input:active, .footer-section .next .unique-dropdown:hover, .footer-section .next .unique-dropdown:focus, .footer-section .next .unique-dropdown:active, .footer-section .next input:hover, .footer-section .next input:focus, .footer-section .next input:active {
+  background: #dedee1;
+}
+.footer-section .previous {
+  width: 0;
+  height: 0;
+  border-top: 1rem solid transparent;
+  border-bottom: 1rem solid transparent;
+  border-right: 1rem solid #000;
+  cursor: pointer;
+  padding: 0 0.5rem;
+  position: relative;
+  top: 1rem;
+}
+.footer-section .next {
+  width: 0;
+  height: 0;
+  border-top: 1rem solid transparent;
+  border-bottom: 1rem solid transparent;
+  border-left: 1rem solid #000;
+  cursor: pointer;
+  padding: 0 0.5rem;
+  position: relative;
+  top: 1rem;
 }
 
 /*# sourceMappingURL=style.css.map */

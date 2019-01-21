@@ -1,3 +1,8 @@
+/**
+  author  : Ishwor
+  This is the simple demo of react web calendar 
+*/
+
 import React, { Component, Fragment } from 'react';
 import Moment from 'moment';
 import './style.css';
@@ -61,10 +66,8 @@ class Calendar extends Component {
   SelectList = (props) => {
        let popup = props.data.map((data) => {
            return (
-               <div key={data} >
-                   <a href="#" onClick={(e)=> {this.onSelectChange(e, data)}}>
-                       {data}
-                   </a>
+               <div key={data} className="unique-dropdown" >
+                   <span onClick={(e)=> {this.onSelectChange(e, data)}}> {data} </span>
                </div>
            );
        });
@@ -85,9 +88,7 @@ class Calendar extends Component {
   MonthNav = () => {
         return (
             <div onClick={(e)=> {this.onChangeMonth(e, this.month())}}>
-              <select>
-                <option>{this.month()}</option>
-              </select>
+                <input value={this.month()} />
                 {this.state.showMonthPopup &&
                  <this.SelectList data={this.state.months} />
                 }
@@ -128,7 +129,7 @@ setYear = (year) => {
 
 YearNav = () => {
      return (
-         this.state.showYearNav ?
+
          <input
              defaultValue = {this.year()}
              className="editor-year"
@@ -137,12 +138,6 @@ YearNav = () => {
              onChange = {(e) => this.onYearChange(e)}
              type="number"
              placeholder="year"/>
-         :
-         <span
-             className="label-year"
-             onDoubleClick={(e)=> { this.showYearEditor()}}>
-             {this.year()}
-         </span>
      );
  }
 
@@ -248,14 +243,14 @@ YearNav = () => {
         </section>
 
         <section className="footer-section">
+          <div className="previous" onClick={this.prevMonth}></div>
           <div className="month-dropdown">
-          <label>Select Month: </label>
             <this.MonthNav />
           </div>
           <div className="year-dropdown">
-            <label> Select Year: </label>
               <this.YearNav/>
           </div>
+          <div className="next" onClick={this.nextMonth}></div>
 
         </section>
 
