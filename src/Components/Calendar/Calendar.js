@@ -1,21 +1,25 @@
+/**
+  author  : Ishwor
+  This is the simple demo of react web calendar 
+*/
+
 import React, { Component, Fragment } from 'react';
-import moment from 'moment';
-import Month from './Months';
+import Moment from 'moment';
 import './style.css';
 
+//Statefull Component
 class Calendar extends Component {
-  state = {
-    dateContext: moment(),
-    today: moment()
+
+  constructor(props){
+    super(props);
   }
 
-  // constructor(props){
-  //   super(props);
-  // }
-
-  //Take a advantage of moment by using it's properies and methods
-  weekdays = moment.weekdaysShort();
-  months = moment.months();
+  state = {
+    dateContext: Moment(),
+    today: Moment(),
+    weekdays: Moment.weekdaysShort(),
+    months: Moment.months()
+  }
 
   //Useful methods define
   year = () => {
@@ -40,15 +44,15 @@ class Calendar extends Component {
 
   firstDayOfMonth = () => {
     let dateContext = this.state.dateContext;
-    let firstDay = moment(dateContext).startOf('month').format('d');
+    let firstDay = Moment(dateContext).startOf('month').format('d');
     return firstDay;
   }
 
   //JUMP TO MONTH
   setMonth = (month) => {
-       let monthNo = this.months.indexOf(month);
+       let monthNo = this.state.months.indexOf(month);
        let dateContext = Object.assign({}, this.state.dateContext);
-       dateContext = moment(dateContext).set("month", monthNo);
+       dateContext = Moment(dateContext).set("month", monthNo);
        this.setState({
            dateContext: dateContext
        });
@@ -57,21 +61,19 @@ class Calendar extends Component {
   onSelectChange = (e, data) => {
         this.setMonth(data);
         this.props.onMonthChange && this.props.onMonthChange();
-    }
+  }
 
   SelectList = (props) => {
        let popup = props.data.map((data) => {
            return (
-               <div key={data}>
-                   <a href="#" onClick={(e)=> {this.onSelectChange(e, data)}}>
-                       {data}
-                   </a>
+               <div key={data} className="unique-dropdown" >
+                   <span onClick={(e)=> {this.onSelectChange(e, data)}}> {data} </span>
                </div>
            );
        });
 
        return (
-           <div className="month-popup">
+           <div className="month-popup" >
                {popup}
            </div>
        );
@@ -82,12 +84,13 @@ class Calendar extends Component {
           showMonthPopup: !this.state.showMonthPopup
       });
   }
-    MonthNav = () => {
+
+  MonthNav = () => {
         return (
             <div onClick={(e)=> {this.onChangeMonth(e, this.month())}}>
-                {this.month()}
+                <input value={this.month()} />
                 {this.state.showMonthPopup &&
-                 <this.SelectList data={this.months} />
+                 <this.SelectList data={this.state.months} />
                 }
             </div>
         );
@@ -104,7 +107,7 @@ showYearEditor = () => {
 
 setYear = (year) => {
        let dateContext = Object.assign({}, this.state.dateContext);
-       dateContext = moment(dateContext).set("year", year);
+       dateContext = Moment(dateContext).set("year", year);
        this.setState({
            dateContext: dateContext
        })
@@ -126,7 +129,7 @@ setYear = (year) => {
 
 YearNav = () => {
      return (
-         this.state.showYearNav ?
+
          <input
              defaultValue = {this.year()}
              className="editor-year"
@@ -135,12 +138,6 @@ YearNav = () => {
              onChange = {(e) => this.onYearChange(e)}
              type="number"
              placeholder="year"/>
-         :
-         <span
-             className="label-year"
-             onDoubleClick={(e)=> { this.showYearEditor()}}>
-             {this.year()}
-         </span>
      );
  }
 
@@ -150,7 +147,7 @@ YearNav = () => {
 
     nextMonth = () => {
         let dateContext = Object.assign({}, this.state.dateContext);
-        dateContext = moment(dateContext).add(1, "month");
+        dateContext = Moment(dateContext).add(1, "month");
         this.setState({
             dateContext: dateContext
         });
@@ -159,93 +156,109 @@ YearNav = () => {
 
     prevMonth = () => {
         let dateContext = Object.assign({}, this.state.dateContext);
-        dateContext = moment(dateContext).subtract(1, "month");
+        dateContext = Moment(dateContext).subtract(1, "month");
         this.setState({
             dateContext: dateContext
         });
         this.props.onPrevMonth && this.props.onPrevMonth();
     }
+// NEXT AND PREVIEW END
 
-  //Rendar Method Start
+  //RENDER METHOD START FROM HERE :::::::::::::::::::
   render(){
 
-    //Get all the weekdays
-    let weekdays = this.weekdays.map((day) => {
+    //Get Weekdays: Sun, Mon, Tue, Wed, Thu, Fri, Sat
+    let weekdays = this.state.weekdays.map((day) => {
       return (
         <th key={day}> {day} </th>
       )
     });
 
-    //Get the blanks
+
+    //Display All the Days Of Specific Months
+    //First Get the blanks cells
     let blanks = [];
-    for(let i = 0; i < this.firstDayOfMonth(); i++ ){
-      blanks.push(<td key={i*80} className="blankCell"> {""} </td>);
+    for ( let i = 0; i < this.firstDayOfMonth(); i++ ) {
+      blanks.push(<td key={i * 80 } className="blankCell"> {" "} </td>);
     }
 
-    //Get the days of full month
+    //Now Get All the Real Days of The Months
     let days = [];
-    for(let d = 1; d <= this.daysInMonth(); d++){
-      let className = (d == this.currentDay() ? "current-day" : "weekday");
-      days.push(<td key={d*100} className={className}>{d}</td>);
+    for ( let d = 1; d <= this.daysInMonth(); d++ ){
+      //Also Add the Class For To current-day or all other days
+      let className = ( d == this.currentDay() ? "current-day" : "weekday" );
+      days.push(<td key={ d * 10 } className={ className }> {d} </td>);
     }
 
-    //Merge it both blanks and real days in one variable
-    let totalDays = [...blanks, ...days];
+    //Now Clone It Both blanks and days arrays and make a full month
+    let fullMonthDays = [...blanks, ...days];
+
+    //Now Loop All of It and Dispaly It to The Table Row and Data
     let rows = [];
     let cells = [];
-
-    //r means row and i means index
-    totalDays.forEach((r, i) => {
-      if((i % 7) !== 0){
-        cells.push(r);
+    fullMonthDays.forEach((row, index) => {
+      if ((index % 7) !== 0) {
+        cells.push(row);
       } else {
         let insertRow = cells.slice();
         rows.push(insertRow);
         cells = [];
-        cells.push(r);
+        cells.push(row);
       }
-      if(i === totalDays.length - 1){
+
+      if(index === fullMonthDays.length - 1) {
         let insertRow = cells.slice();
         rows.push(insertRow);
       }
     });
 
+    //Now Map it and make it ready to dispaly to the Table
     //d means day and i means index
-    let finalDays = rows.map((d, i) => {
+    let finalFullMonthDays = rows.map((d, i) => {
       return (
-        <tr key={i * 100 }>{d}</tr>
+        <tr key={ i * 10 }>{d}</tr>
       );
     });
 
-    return(
-      <Fragment>
-        <div className="wrapper">
-          <header>
-            <h1> Calendar </h1>
-          </header>
-          <section className="calendar-body">
-            <table>
-              <thead>
-                <tr>{weekdays}</tr>
-              </thead>
-              <tbody>
-                {finalDays}
-              </tbody>
-            </table>
-          </section>
-          <section>
-            <this.MonthNav />
-            {" "}
-            <this.YearNav />
-          </section>
-          <section>
-            <span onClick={(e)=> {this.prevMonth()}}>Pre </span>
-            <span onClick={(e)=> {this.nextMonth()}}> Next</span>
-          </section>
 
-        </div>
+    return (
+      <Fragment>
+
+      <div className="wrapper">
+
+        <header>
+          <h1> Calendar </h1>
+          <h4> { this.month()} / {this.year()} </h4>
+        </header>
+
+        <section className="calendar-body">
+          <table>
+            <thead>
+              <tr>{weekdays}</tr>
+            </thead>
+            <tbody>
+              {finalFullMonthDays}
+            </tbody>
+          </table>
+        </section>
+
+        <section className="footer-section">
+          <div className="previous" onClick={this.prevMonth}></div>
+          <div className="month-dropdown">
+            <this.MonthNav />
+          </div>
+          <div className="year-dropdown">
+              <this.YearNav/>
+          </div>
+          <div className="next" onClick={this.nextMonth}></div>
+
+        </section>
+
+      </div> {/*END OF MAIN WRAPPER DIV*/}
+
+
       </Fragment>
-    )
+    );
   }
 }
 

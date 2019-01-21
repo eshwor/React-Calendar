@@ -1,0 +1,119 @@
+/**
+  StyleSheet for Calendar
+  /**
+  CALENDAR MAIN STYLE GOES HERE
+  CREATED BY ISHWOR
+  FRONT END DEVELOPER
+  DESCRIPTION: I have dump all the var and usefull class in same file for this small Project but it would be
+                nice if we make a seperate file for var and common useful class so on.
+                This is kind a basic styles for calendar but we could do lot more as we need.
+*/
+
+
+* {
+  padding: 0;
+  margin: 0;
+}
+
+//Define Var
+$white: #FFF;
+$black: #000;
+$red: red;
+$lightGray: #f3f3f5;
+$darkGray: #dedee1;
+$green: green;
+$lightGreen: #7ef37e;
+$orange: orange;
+$yellow: yellow;
+
+ .wrapper {
+   background: $darkGray;
+   padding: 1rem;
+   color: $black;
+   margin: 2rem auto;
+   width: 29rem;
+   border-radius: 0.5rem;
+
+   header { padding-bottom: 1rem; }
+ }
+
+ section.calendar-body {
+   background: $white;
+   padding: 1rem;
+ }
+
+ table {
+   margin: 0 auto;
+
+   th,td {
+     background: $lightGray;
+     padding:1rem;
+   }
+
+   //blanks, weekday, weekends, currentDay
+   .weekday {
+     background: $lightGreen;
+   }
+
+   td:nth-child(6n+1):not(.blankCell){
+     background: $yellow;
+   }
+
+   .current-day {
+      background: $orange !important; //override it
+   }
+ }//table end
+
+//Footer Section
+ .footer-section {
+   border: 3px solid $white;
+   display: flex;
+   justify-content: space-around;
+
+  .month-dropdown, .year-dropdown, .previous, .next {
+    padding: 1rem;
+
+    select {
+      background: $lightGray;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      padding: 1rem;
+      cursor: pointer;
+    }
+
+
+    .unique-dropdown, input {
+      background: $lightGray;
+      padding: 0.5rem;
+      border-bottom: 1px solid $darkGray;
+      cursor: pointer;
+
+      &:hover, &:focus, &:active {
+        background: $darkGray;
+      }
+    }
+  }
+  .previous {
+    width: 0;
+    height: 0;
+    border-top: 1rem solid transparent;
+    border-bottom: 1rem solid transparent;
+    border-right:1rem solid $black;
+    cursor: pointer;
+    padding: 0 0.5rem;
+    position: relative;
+    top: 1rem;
+  }
+  .next {
+    width: 0;
+    height: 0;
+    border-top: 1rem solid transparent;
+    border-bottom: 1rem solid transparent;
+    border-left: 1rem solid $black;
+    cursor: pointer;
+    padding: 0 0.5rem;
+    position: relative;
+    top: 1rem;
+  }
+ }
